@@ -16,9 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return Auth::user();
+//     return $request->user();
+// });
+
+Route::get('/user', function (Request $request) {
+    // return response()->json(["status" => "ok"]);
     return $request->user();
-});
+})->middleware('auth:sanctum');
+
+Route::get('/first', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 
 Route::get('/auth/google', [LoginController::class, "redirectToProvider"]);

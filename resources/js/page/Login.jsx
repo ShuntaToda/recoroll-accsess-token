@@ -11,12 +11,14 @@ export const LoginPage = () => {
     };
 
     const getUser = async () => {
-        const { data } = await axios.get("/api/user");
+        const query = queryString.parse(location.search);
+        const token = await socialLogin(query);
+        const { data } = await axios.get("/api/first", {
+            headers: {Authorization: `Bearer ${token}`,}
+        });
         console.log(data);
     };
     useEffect(() => {
-        const query = queryString.parse(location.search);
-        socialLogin(query);
         getUser();
     }, []);
     return <div>Login</div>;
