@@ -22,17 +22,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/user', function (Request $request) {
-    // return response()->json(["status" => "ok"]);
     return $request->user();
 })->middleware('auth:sanctum');
-
-Route::get('/first', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 
 Route::get('/auth/google', [LoginController::class, "redirectToProvider"]);
 Route::post('/auth/google/callback', [LoginController::class, "handleProviderCallback"]);
-// Route::get("/user", function () {
-//     return response()->json(Auth::user());
-// });
