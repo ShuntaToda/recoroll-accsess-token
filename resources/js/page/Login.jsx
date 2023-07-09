@@ -13,7 +13,7 @@ export const LoginPage = () => {
     const getUser = async () => {
         const query = queryString.parse(location.search);
         const token = await socialLogin(query);
-        const { data } = await axios.get("/api/first", {
+        const { data } = await axios.get("/api/user", {
             headers: {Authorization: `Bearer ${token}`,}
         });
         console.log(data);

@@ -14,7 +14,6 @@ class LoginController extends Controller
 {
     public function redirectToProvider()
     {
-        // return response()->json("aaa");
         // return Socialite::driver('google')->stateless()->redirect();
         $redirect_url = Socialite::driver('google')->redirect()->getTargetUrl();
         return response()->json($redirect_url);
@@ -27,16 +26,10 @@ class LoginController extends Controller
      */
     public function handleProviderCallback(Request $request)
     {
-        // return response()->json($request);
         $user = Socialite::driver("google")->user();
+
         $login_user = User::where("email", $user->email)->first();
-        if ($login_user) {
-            // return response()->json([
-            //     "data" => $login_user,
-            //     "message" => "exist user"
-            // ]);
-        } else {
-            // return response()->json($column);
+        if (empty($login_user)) {
             $login_user = User::create([
                 "email" => $user->email,
                 "name" => $user->name,
@@ -44,18 +37,7 @@ class LoginController extends Controller
             ]);
         }
 
-        // return response()->json($login_user);
-        // Auth::login($login_user);
         $token = $login_user->createToken("Token Name")->plainTextToken;
         return response()->json($token);
-        // Auth::login($login_user, $remember = true);
-        // $login_user = User::firstOrCreate([
-        //     'email' => $user->email,
-        // ], [
-        //     "name" => $user->name,
-        //     'image' => $user->avatar,
-        // ]);
-
-        // return response()->json(Auth::user());
     }
 }

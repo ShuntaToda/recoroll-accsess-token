@@ -33,6 +33,6 @@ Route::get('/first', function (Request $request) {
 
 Route::get('/auth/google', [LoginController::class, "redirectToProvider"]);
 Route::post('/auth/google/callback', [LoginController::class, "handleProviderCallback"]);
-Route::get("/user", function () {
-    return response()->json(Auth::user());
-});
+// Route::get("/user", function () {
+//     return response()->json(Auth::user());
+// });
