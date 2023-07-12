@@ -1,15 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { getAuthURL } from "../api/authAPI";
+import { setUserContext, userContext } from "../provider/user";
 
 export const DashboardPage = () => {
+    const user = useContext(userContext);
+    const setUser = useContext(setUserContext);
+
     const login = async () => {
         const url = await getAuthURL();
-        console.log(url);
+        window.location.href = url;
     };
 
     useEffect(() => {
-        login();
+        console.log(user);
     }, []);
+    return (
+        <div>
+            <h1>Dashboard</h1>
 
-    return <div>Dashboard</div>;
+            <button onClick={login}>login</button>
+        </div>
+    );
 };

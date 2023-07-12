@@ -6,6 +6,7 @@ import { BrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import { DashboardPage } from "./page/Dashboard";
 import { LoginPage } from "./page/Login";
 import { getUser } from "./api/authAPI";
+import { UserProvider } from "./provider/user";
 
 const App = () => {
     const [user, setUser] = useState({});
@@ -19,15 +20,17 @@ const App = () => {
         checkUser();
     }, []);
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<DashboardPage />}></Route>
-                <Route
-                    path="/auth/google/callback"
-                    element={<LoginPage />}
-                ></Route>
-            </Routes>
-        </BrowserRouter>
+        <UserProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<DashboardPage />}></Route>
+                    <Route
+                        path="/auth/google/callback"
+                        element={<LoginPage />}
+                    ></Route>
+                </Routes>
+            </BrowserRouter>
+        </UserProvider>
     );
 };
 

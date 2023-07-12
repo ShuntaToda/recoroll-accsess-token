@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { callbackAuth } from "../api/authAPI";
 import queryString from "query-string";
 import { redirect } from "react-router-dom";
+import { setUserContext, userContext } from "../provider/user";
 
 export const LoginPage = () => {
-    const socialLogin = async (authParams) => {
+    const user = useContext(userContext);
+    const setUser = useContext(setUserContext);
+
+    const getAccessToken = async (authParams) => {
         const data = await callbackAuth(authParams);
         console.log(data);
         return data;
@@ -12,14 +16,30 @@ export const LoginPage = () => {
 
     const getUser = async () => {
         const query = queryString.parse(location.search);
-        const token = await socialLogin(query);
+        const token = await getAccessToken(query);
         const { data } = await axios.get("/api/user", {
-            headers: {Authorization: `Bearer ${token}`,}
+            headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(data);
+        setUser(data);
     };
     useEffect(() => {
         getUser();
     }, []);
-    return <div>Login</div>;
+
+    useEffect(() => {
+        // if (user.id) window.location.href = "/";
+    }, [user]);
+
+    return (
+        <div>
+            <div>ログイン中</div>
+            <button
+                onClick={() => {
+                    console.log(user);
+                }}
+            >
+                console user
+            </button>
+        </div>
+    );
 };
