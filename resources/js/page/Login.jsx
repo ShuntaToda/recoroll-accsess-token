@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { callbackAuth } from "../api/authAPI";
+import { callbackAuth, getAuthURL } from "../api/authAPI";
 import queryString from "query-string";
 import { redirect } from "react-router-dom";
 import { setUserContext, userContext } from "../provider/user";
@@ -17,29 +17,32 @@ export const LoginPage = () => {
     const getUser = async () => {
         const query = queryString.parse(location.search);
         const token = await getAccessToken(query);
+        localStorage.setItem("token", token)
         const { data } = await axios.get("/api/user", {
             headers: { Authorization: `Bearer ${token}` },
         });
         setUser(data);
     };
+
+    
+    const login = async () => {
+        const url = await getAuthURL();
+        window.location.href = url;
+    };
+
     useEffect(() => {
         getUser();
     }, []);
 
-    useEffect(() => {
-        // if (user.id) window.location.href = "/";
-    }, [user]);
 
     return (
         <div>
-            <div>ログイン中</div>
+            <div>ログイン</div>
             <button
-                onClick={() => {
-                    console.log(user);
-                }}
-            >
-                console user
+                onClick={login}
+            >login
             </button>
+            <a href="/">home</a>
         </div>
     );
 };

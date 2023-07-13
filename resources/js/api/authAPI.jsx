@@ -1,9 +1,10 @@
 import axios from "axios";
 
 export const getUser = async () => {
-    // data = "a";
-    let { data } = await axios.get("/api/user");
-    console.log(data);
+    const { data } = await axios.get("/api/user", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    console.log(data)
     return data;
 };
 
