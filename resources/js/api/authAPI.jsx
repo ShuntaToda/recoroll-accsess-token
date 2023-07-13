@@ -1,11 +1,18 @@
 import axios from "axios";
 
 export const getUser = async () => {
-    const { data } = await axios.get("/api/user", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-    console.log(data)
-    return data;
+    try {
+        const { data } = await axios.get("/api/user", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+        });
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 export const getAuthURL = async () => {
