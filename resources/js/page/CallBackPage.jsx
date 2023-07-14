@@ -35,7 +35,7 @@ export const CallBackPage = () => {
     // };
     return (
         <>
-            <div>CallBackPage</div>
+            <div>loading...</div>
             {/* <Navigator /> */}
         </>
     );

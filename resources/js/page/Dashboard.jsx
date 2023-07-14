@@ -13,12 +13,15 @@ export const DashboardPage = () => {
         setUser({});
         navigate("/login");
     };
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
     return (
         <div>
             <h1>Dashboard</h1>
+            <div className="">
+                <div>{user.id}</div>
+                <div>{user.name}</div>
+                <div>{user.email}</div>
+                <img src={user.avatar} alt="" />
+            </div>
             <button onClick={logout}>logout</button>
         </div>
     );

@@ -30,11 +30,17 @@ const App = () => {
 
     const RouteAuthGuard = ({ component }) => {
         const setUser = useContext(setUserContext);
+
+        useEffect(() => {
+            if (isAuthed === true) {
+                setUser(loginUser);
+            }
+        }, [isAuthed]);
+
         if (isAuthed == null) {
             return <div>loading...</div>;
         } else if (isAuthed == true) {
             console.log("isAuthed true");
-            setUser(loginUser);
             return <>{component}</>;
         } else {
             console.log("isAuthed false");
