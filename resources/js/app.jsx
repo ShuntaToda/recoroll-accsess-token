@@ -1,7 +1,6 @@
 import "./bootstrap";
 import { createRoot } from "react-dom/client";
-import { router } from "./routes";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     BrowserRouter,
     Navigate,
@@ -12,65 +11,62 @@ import {
 import { DashboardPage } from "./page/Dashboard";
 import { LoginPage } from "./page/Login";
 import { getUser } from "./api/authAPI";
-import { UserProvider } from "./provider/user";
+import { UserProvider, setUserContext } from "./provider/user";
 import { useAuthUser } from "./hooks/useAuth";
+import { CallBackPage } from "./page/CallBackPage";
 
 const App = () => {
-    const [user, setUser] = useState({});
-    const [isAuthed, setIsAuthed] = useState(false);
-
-    // const checkUser = async () => {
-    //     const { user, isAuthed } = await useAuthUser();
-    //     setUser(user);
-    //     setIsAuthed(isAuthed);
-    //     return isAuthed;
-    // };
+    const [loginUser, setLoginUser] = useState(null);
+    const [isAuthed, setIsAuthed] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const { user, isAuthed } = await useAuthUser();
-            console.log(user, isAuthed);
             setIsAuthed(isAuthed);
+            setLoginUser(user);
         };
         fetchData();
     }, []);
 
-    const RouteAuthGuard = () => {
-        console.log(user, isAuthed);
-        if (false) {
+    const RouteAuthGuard = ({ component }) => {
+        const setUser = useContext(setUserContext);
+        if (isAuthed == null) {
+            return <div>loading...</div>;
+        } else if (isAuthed == true) {
+            console.log("isAuthed true");
+            setUser(loginUser);
+            return <>{component}</>;
+        } else {
             console.log("isAuthed false");
             return <Navigate to="/login" replace />;
-        } else {
-            console.log("isAuthed true");
-            return <></>;
         }
     };
 
     return (
-        <UserProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route
-                        element={
-                            <RouteAuthGuard>
-                                <Route
-                                    path="/"
-                                    element={<DashboardPage />}
-                                ></Route>
-                            </RouteAuthGuard>
-                        }
-                    ></Route>
-                    <Route
-                        path="/auth/google/callback"
-                        element={<LoginPage />}
-                    ></Route>
-                    <Route path="/login" element={<LoginPage />}></Route>
-                </Routes>
-            </BrowserRouter>
-        </UserProvider>
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <RouteAuthGuard
+                            component={<DashboardPage />}
+                        ></RouteAuthGuard>
+                    }
+                ></Route>
+                <Route
+                    path="/auth/google/callback"
+                    element={<CallBackPage />}
+                ></Route>
+                <Route path="/login" element={<LoginPage />}></Route>
+            </Routes>
+        </BrowserRouter>
     );
 };
 
 const container = document.getElementById("app");
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+    <UserProvider>
+        <App />
+    </UserProvider>
+);

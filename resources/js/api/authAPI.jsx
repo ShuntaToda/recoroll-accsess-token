@@ -1,6 +1,11 @@
 import axios from "axios";
 
 export const getUser = async () => {
+    if (localStorage.getItem("token") == null) {
+        console.log("token nothing");
+    } else {
+        console.log("token OK");
+    }
     try {
         const { data } = await axios.get("/api/user", {
             headers: {
