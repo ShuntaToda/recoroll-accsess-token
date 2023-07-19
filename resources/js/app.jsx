@@ -14,6 +14,7 @@ import { getUser } from "./api/authAPI";
 import { UserProvider, setUserContext } from "./provider/user";
 import { useAuthUser } from "./hooks/useAuth";
 import { CallBackPage } from "./page/CallBackPage";
+import { Loading } from "./page/Loading";
 
 const App = () => {
     const [loginUser, setLoginUser] = useState(null);
@@ -38,7 +39,7 @@ const App = () => {
         }, [isAuthed]);
 
         if (isAuthed == null) {
-            return <div>loading...</div>;
+            return <Loading></Loading>;
         } else if (isAuthed == true) {
             console.log("isAuthed true");
             return <>{component}</>;

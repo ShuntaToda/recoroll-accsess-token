@@ -3,6 +3,8 @@ import { getAuthURL } from "../api/authAPI";
 import { setUserContext, userContext } from "../provider/user";
 import { Navigate, useNavigate } from "react-router-dom";
 
+import logo from "../../images/logos/logo.svg";
+
 export const DashboardPage = () => {
     const user = useContext(userContext);
     const setUser = useContext(setUserContext);
@@ -15,6 +17,10 @@ export const DashboardPage = () => {
     };
     return (
         <div>
+            <div className="flex justify-between items-center">
+                <a href="/"><h1 className="py-4 px-6"><img src={logo} className="w-52"></img></h1></a>
+                <div></div>
+            </div>
             <h1>Dashboard</h1>
             <div className="">
                 <div>{user.id}</div>
